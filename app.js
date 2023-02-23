@@ -46,6 +46,7 @@ rightBtn.addEventListener('click', () => {
         }, 400)
     }, 500)
     demoBtn.setAttribute('href', 'space-battle/index.html')
+    codeBtn.setAttribute('href', 'https://github.com/jpgrimesy/My-Portfolio/tree/main/space-battle')
 })
 leftBtn.addEventListener('click', () => {
     activeRightBtn()
@@ -64,7 +65,8 @@ leftBtn.addEventListener('click', () => {
             document.getElementById('one').style.display = 'block'
         }, 400)
     }, 500)
-    demoBtn.setAttribute('href', 'hangman/index.html')
+    demoBtn.setAttribute('href', 'hangman1/index.html')
+    codeBtn.setAttribute('href', 'https://github.com/jpgrimesy/My-Portfolio/tree/main/hangman1')
 })
 function activeLeftBtn() {
     leftBtn.style.backgroundColor = '#9881b1';
