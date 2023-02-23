@@ -1,0 +1,107 @@
+@font-face {
+    font-family: Chalktastic;
+    src: url('Chalktastic-r78L.ttf');
+}
+html {
+    background: url(images/blackboardBG.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+body {
+    font-family: Chalktastic;
+    color: white;
+    text-align: center;
+}
+h1 {
+    font-size: 50px;
+}
+.game-container{
+    text-align: center;
+    position: relative ;
+    align-items: center;
+    flex-direction: row;
+    display: inline-flex;
+    width: 100%;
+}
+.game-container img {
+    width: 100%;
+}
+.hangman-img {
+    position: absolute;
+    max-width: 30vw;
+    left: 6%;
+}
+
+.hangman-img img {
+    width: 100%;
+    display: none;
+}
+
+.letters {
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+button {
+    font-family: inherit;
+    font-size: 40px;
+    min-width: 60px;
+    margin: 5px 2px;
+    background-color: rgb(35, 100, 50);
+    border-radius: 10px;
+    color: white;
+}
+.word {
+    position: absolute; 
+    right: 10%;
+    font-size: 60px;
+    max-width: 50vw;
+} 
+#modal {
+    background-color: rgba(0,0,0, 0.4);
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
+	overflow: auto;
+	display: none;
+}
+#modal-textbox {
+    background-color: white;
+	height: 350px;
+	width: 600px;
+	margin: 150px auto;
+	border-radius: 2px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+	padding: 2%;
+	line-height: 120%;
+}
+#win-lose-modal {
+    background-color: rgba(0,0,0, 0.4);
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 2;
+	overflow: auto;
+	display: none;
+}
+#win-lose-modal-textbox {
+    background-color: white;
+	height: 350px;
+	width: 600px;
+	margin: 150px auto;
+	border-radius: 2px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+	padding: 2%;
+	line-height: 120%;
+    color: black;
+    font-size: 70px
+}
