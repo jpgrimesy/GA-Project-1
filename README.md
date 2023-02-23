@@ -23,6 +23,8 @@ https://www.figma.com/proto/suEylFeC0gfdXud8HuFuCq/Project-1?node-id=4%3A15&scal
 UNSOLVED PROBLEMS:
 
 -had to change the way the images moved when navigating between projects
+
 -while building mobile first, navigation from the top of the screen seemed like a better choice
+
 -only unavailable link is the download resume button because I'm using a sample resume and nobody wants a copy of that
 
