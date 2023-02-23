@@ -10,11 +10,6 @@ body {
     height: 100vh;
     width: 100vw;
     margin: auto;
-    /* border: 2px solid red; */
-    /* display: relative; */
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between; */
 }
 .nav a {
     text-decoration: none;
@@ -22,53 +17,40 @@ body {
     transition: 0.3s;
     font-weight: 600;
 }
-a:hover, li:hover {
+a:hover, nav li:hover {
     color: #2b272b;
     background-color: white;
 }
 li {
     list-style-type: none;
     width: 100%;
-
-    /* text-align: left; */
-    /* display: inline-block; */
 }
 .main-text {
-    /* flex-grow: 1; */
     text-align: right;
-    /* position: fixed;*/
     margin: auto auto; 
 }
-
 .navbar {
-    /* border: 2px solid pink; */
-    /* justify-content: flex-start; */
     position: fixed;
     top: 0;
-    /* left: 0;
-    right: 0; */
     width: 100vw;
     background-color: #2b272b;
 }
 .nav {
     text-align: right;
-    /* justify-content: flex-start; */
-    /* position: relative; */
     margin-right: 1vw;
     margin-bottom: 0;
-    /* margin-left: 0; */
     padding-top: 15px;
     padding-left: 0;
     display: none;
     flex-direction: column;
 }
-#chevron {
-    max-width: 30px;
-    transform: rotate(270deg);
-}
 .nav-border {
     text-align: right;
     background-color: #a998c3;
+}
+#chevron {
+    max-width: 30px;
+    transform: rotate(270deg);
 }
 .chevron {
     background-color: #9881b1;
@@ -78,14 +60,6 @@ li {
 .chevron:hover {
     background-color: #766293;
     border: 2px solid #766293;
-}
-/* .chevron:hover {
-    background-color: #766293;
-    border: 2px solid #766293;
-} */
-
-h1:hover {
-    color: pink;
 }
 li:hover {
     background-color: white;
@@ -97,19 +71,12 @@ li:hover {
     position: fixed;
    
 }
-
 .main-text p {
     top: 290px;
-    left: 145px;
-   
+    left: 145px; 
     position: fixed;
-    /* text-align: center; */
-    
 }
 footer {
-    /* display: flex;
-    justify-content: center;
-    flex-direction: row; */
     position: fixed;
     width: 100vw;
     bottom: 0;
@@ -117,7 +84,6 @@ footer {
     background-color: white;
     padding-top: 5px;
 } 
-
 footer img {
     max-width: 30px;
     margin: 0 5px 0 5px;
@@ -136,15 +102,9 @@ footer img {
     margin-bottom: 50px;
 }
 .about-me h1 {
-    /* margin-top: 20vh;
-    margin-bottom: 50px;
-    margin-left: -50px; */
     text-align: left;
     margin: 20vh auto 50px 10px;
 }
-/* #home-link {
-    padding-bottom: 10px;
-} */
 #left-btn {
     cursor: not-allowed;
     border: 2px solid darkgray;
@@ -170,14 +130,10 @@ footer img {
 #resume img{
     width: 95%;
 }
-
-
 .modal-btns {
-    /* margin-right: 0; */
     text-align: right;
     padding-right: 3vw;
     padding-bottom: 5px;
-    /* position: fixed; */
 }
 .modal-btns button {
     width: 40px;
@@ -189,8 +145,6 @@ footer img {
 }
 .projects-container {
     display: flex;
-    /* flex-direction: column; */
-
     width: 100vw;
     height: 50vh;
     top: 30%;
@@ -204,7 +158,6 @@ footer img {
     top: 30%;
     width: 100vw;
     height: 50vh;
-    /* background: linear-gradient(10deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 5, .6)), url(images/hangman-img.jpg) no-repeat; */
     background: url(images/hangman-img.jpg);
     box-shadow: inset 0 0 0 1000px rgba(0,0,0,.6);
     background-size: cover;
@@ -213,74 +166,64 @@ footer img {
     z-index: -1;
     
 }
-
 .projects-container img {
     height: 100%;
     width: 100%;
-    /* backdrop-filter: blur(39px); */
-    
-    
 }
 .projects-container button {
-    /* width: 30px; */
-    /* height: 30px; */
     background-color: #9881b1;
     border: 2px solid #9881b1;
-    
-    /* height: 30px; */
-    /* text-align: center;
-    justify-content: center;
-    align-items: center; */
 }
 .projects-container button img {
     width: 15px;
     margin-top: 3px;
-    /* height: 100%; */
-    /* justify-content: center; */
-    
 }
 .project-highlight {
-    /* border: 3px solid white; */
-    width: 85%;
-    /* position: relative; */
-    /* height: 48%; */
-   /* position: fixed; */
-    /* background: url(images/projects-imgs.jpg); */
-    /* box-shadow: inset 0 0 0 1000px rgba(0,0,0,.6); */
-    /* background-position: top; */
-    /* background-size: cover; */
-    /* flex-wrap: nowrap; */
-   /* background-position-x: 2500px; */
-    /* overflow: hidden; */
-    /* display: flex;
-    flex-direction: row; */
-    
-    /* animation: run 6s forward; */
+    width: 400px;
 }
-
-.container-btns {
-   
+#projects-h1 {
     position: fixed;
-    bottom: 100px;
+    top: 18vh;
+    left: 15px;
+}
+.container-btns {
+    margin: 0 auto;
+    position: fixed;
+    bottom: 15%;
+}
+.container-btns button {
+    width: 60px;
+    height: 30px;
+}
+#demo:hover, #code:hover {
+    background-color: #766293;
+    
+}
+.container-btns button:hover {
+    background-color: #766293;
+    border: 2px solid #766293;
+}
+.container-btns a {
+    text-decoration: none;
+    color: black;
+    font-size: 17px;
 }
 #one {
     border: 3px solid white;
-    width: 98%;
+    width: 100%;
     position: relative;
-    /* animation: move-right-out 0.4s linear forwards; */
     display: block;
-    
 }
 #one-anim-right-out {
     border: 3px solid white;
-    width: 95%;
+    width: 100%;
     position: relative;
     animation: move-right-out 0.4s linear forwards;
-    /* display: inline; */
+    display: block;
 }
 #one-anim-left-in {
     border: 3px solid white;
-    width: 95%;
+    width: 100%;
     position: relative;
     animation: move-left-in 0.4s linear forwards;
     display: block;
@@ -290,18 +233,17 @@ footer img {
     width: 100%;
     position: relative;
     display: none;
-    /* animation: move-right-in 0.4s linear forwards; */
 }
 #two-anim-right-in {
     border: 3px solid white;
-    width: 98%;
+    width: 100%;
     position: relative;
-    display: inline;
+    display: block;
     animation: move-right-in 0.4s linear forwards;
 }
 #two-anim-left-out {
     border: 3px solid white;
-    width: 98%;
+    width: 100%;
     position: relative;
     animation: move-left-out 0.4s linear forwards;
     display: block;
@@ -338,9 +280,7 @@ footer img {
         left: 0;
     }
 }
-
 @media screen and (min-width: 768px){
-
     .main-text h1 {
         font-size: 3rem;
         left: 35px;
@@ -350,11 +290,45 @@ footer img {
         font-size: 1.5rem;
         top: 310px;
     }
+    .about-me h1 {
+        font-size: 3rem;
+    }
     #resume {
         width: 95vw;
     }
     #resume img {
         width: 90%;
     }
+    .about-me img {
+        width: 70vw;
+    }
+    .project-highlight {
+       width: 600px;
+    }
+    #projects-h1 {
+        font-size: 3rem;
+    }
 }
-
+@media screen and (min-width: 1024px){
+    .main-text h1 {
+        font-size: 4rem;
+        left: 40px;
+    }   
+    .main-text p {
+        font-size: 2rem;
+        left: 180px;
+        top: 330px;
+    }
+    #resume {
+        width: 60vw;
+    }
+    #resume img {
+        width: 85%;
+    }
+    .project-highlight {
+        width: 700px;
+    } 
+    .about-me img {
+        width: 60vw;
+    }
+}

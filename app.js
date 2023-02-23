@@ -7,7 +7,8 @@ const resumeLink = document.querySelector('.resume-link')
 const leftBtn = document.getElementById('left-btn')
 const rightBtn = document.getElementById('right-btn')
 const projectBg = document.querySelector('.projects-bg')
-
+const demoBtn = document.getElementById('demo')
+const codeBtn = document.getElementById('code')
 
 hamburgerBtn.addEventListener('click', () => {
     let display = navContainer.style.display
@@ -44,6 +45,7 @@ rightBtn.addEventListener('click', () => {
             document.getElementById('two').style.display = 'block'
         }, 400)
     }, 500)
+    demoBtn.setAttribute('href', 'space-battle/index.html')
 })
 leftBtn.addEventListener('click', () => {
     activeRightBtn()
@@ -62,8 +64,9 @@ leftBtn.addEventListener('click', () => {
             document.getElementById('one').style.display = 'block'
         }, 400)
     }, 500)
+    demoBtn.setAttribute('href', 'hangman/index.html')
 })
-function activeLeftBtn () {
+function activeLeftBtn() {
     leftBtn.style.backgroundColor = '#9881b1';
     leftBtn.style.border = '2px solid #9881b1';
     leftBtn.style.cursor = 'pointer';
@@ -87,3 +90,4 @@ function disableRightBtn() {
     rightBtn.style.cursor = 'not-allowed'
     rightBtn.disabled = true
 }
+
