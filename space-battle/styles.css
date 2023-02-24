@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
     background: url(images/space-bg.jpg) no-repeat center center fixed;
     background-size: cover;
     font-family: Arial, Helvetica, sans-serif;
     height: 95vh;
-    
+    font-family: 'Press Start 2P', cursive;
 }
 
 .ships-container {
@@ -13,22 +15,23 @@ body {
     flex-direction: column;
     text-align: center;
     justify-content: space-between;
+    align-items: center;
 }
 .hero img {
     width: 100px;
 }
 .aliens {
-    width: 100vw;
+    width: 320px;
     justify-content: center;
     align-items: center;
 
 }
 .alien-fleet img {
-    width: 40px;
+    width: 60px;
 }
 .alien-fleet {
     justify-content: center;
-    width: 100vw;
+    width: 100%;
     position: relative;
     /* transition: 1s; */
     animation: move-in 3s linear forwards;
@@ -36,29 +39,34 @@ body {
 }
 .test {
     
-    transition: transform 2s;
+    transition: transform 1s;
 }
-
+.row-1-hlth, .row-2-hlth {
+    color: white;
+    font-size: 7.6px;
+}
 .main-alien {
     
     position: relative;
-    width: 30vw;
-    animation: move-left 3s linear infinite;
+    width: 50%;
+    animation: move-left 2s linear infinite;
 }
 .main-alien img {
-    width: 100px;
+    width: 75px;
 }
 @keyframes move-left {
     0% {
-        left: 30%;
+        top: -35%;
+        left: 15%;
         /* bottom: -50%; */
     }
     50% {
-        left: 50%;
+        left: 30%;
         /* bottom: 50%; */
     }
     100% {
-        left: 30%;
+        top: -35%;
+        left: 15%;
         /* bottom: -50%; */
     }
 }

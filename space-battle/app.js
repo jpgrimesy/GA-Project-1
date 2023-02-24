@@ -472,26 +472,55 @@ function gameOver() {
     }
 }
 const alienFleet = document.querySelector('.alien-fleet')
+const rowOne = document.querySelector('.row-1')
+const rowTwo = document.querySelector('.row-2')
+const rowOneHealth = document.querySelector('.row-1-hlth')
+const rowTwoHealth = document.querySelector('.row-2-hlth')
+let rowOneArr = []
+let rowTwoArr = []
 let fleetArr = []
-
+let spans = []
+// let health = docume
 function makeAlien() {
     enemyGenPlus()
     // console.log(enemies)
     enemies.forEach(ship => {
     let alienShip = document.createElement('img')
+    let alienHull = document.createElement('span')
     alienShip.setAttribute('src', 'images/alien-ship.png')
     alienShip.setAttribute('class', 'fleet-ship')
     alienShip.setAttribute('id', `alien-${enemies.indexOf(ship)}`)
-    alienFleet.append(alienShip)   
+    alienHull.innerText = `hull: ${ship.hull} `
+    if(enemies.indexOf(ship) <= 4) {
+        rowOne.append(alienShip)
+        rowOneHealth.append(alienHull)
+        rowOneArr = document.querySelectorAll('.row-1 img')
+    } else {
+        rowTwo.append(alienShip)
+        rowTwoHealth.append(alienHull)
+        rowTwoArr = document.querySelectorAll('.row-2 img')
+    }
+      
     })
     fleetArr = document.querySelectorAll('.alien-fleet img')
+    spans = document.querySelectorAll('span')
 }
 makeAlien()
 fleetArr.forEach(ship => {
-    ship.addEventListener('click', () => {
+    ship.addEventListener('click', (e) => {
         ship.classList.add('test')
-        document.querySelector('.test').style.transform = 'translate(50px, 100px) scale(1.5)'
-        setTimeout(()=>ship.classList.remove('test'), 2000)
-        console.log(ship.className)
+        document.querySelector('.test').style.transform = 'translate(0, 130%) scale(1.33)'
+        console.log(e.target)
+        setTimeout(()=> {
+            document.querySelector('.main-alien').appendChild(ship);
+            rowOneArr = document.querySelectorAll('.row-1 img')
+        }, 500)
+        disableSelect()
+        
     })
+    
 })
+function disableSelect() {
+    fleetArr.forEach(ship => ship.style.pointerEvents = 'none')
+}
+// console.log(spans)
