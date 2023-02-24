@@ -5,14 +5,7 @@ body {
     height: 95vh;
     
 }
-h1 {
-    position: fixed;
-    color: white;
-    text-align: center;
-    margin-top: 50vh;
-    left: 35%;
-    font-size: 80px;
-}
+
 .ships-container {
     margin: 0 0;
     display: flex;
@@ -22,14 +15,62 @@ h1 {
     justify-content: space-between;
 }
 .hero img {
-    width: 30vw;
+    width: 100px;
 }
-.alien-ships img {
-    width: 19vw;
+.aliens {
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+
+}
+.alien-fleet img {
+    width: 40px;
+}
+.alien-fleet {
+    justify-content: center;
+    width: 100vw;
+    position: relative;
+    /* transition: 1s; */
+    animation: move-in 3s linear forwards;
+    
+}
+.test {
+    
+    transition: transform 2s;
+}
+
+.main-alien {
+    
+    position: relative;
+    width: 30vw;
+    animation: move-left 3s linear infinite;
 }
 .main-alien img {
-    width: 30vw;
+    width: 100px;
 }
+@keyframes move-left {
+    0% {
+        left: 30%;
+        /* bottom: -50%; */
+    }
+    50% {
+        left: 50%;
+        /* bottom: 50%; */
+    }
+    100% {
+        left: 30%;
+        /* bottom: -50%; */
+    }
+}
+@keyframes move-in {
+    from {
+        top: -100%;
+    }
+    to {
+        top: 3%;
+    }
+}
+
 @media screen and  (min-width: 1024px) {
     .hero img {
         width: 10vw;

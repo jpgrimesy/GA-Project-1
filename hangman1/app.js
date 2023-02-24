@@ -93,7 +93,7 @@ buttons.forEach(button => {
         checkRight(isRight)
         addToUsed(id)
         event.target.style.display = 'none'
-    })
+    }) 
 })
 //creates array of single word
 function dashCreate() {

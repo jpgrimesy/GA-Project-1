@@ -471,4 +471,27 @@ function gameOver() {
         }
     }
 }
+const alienFleet = document.querySelector('.alien-fleet')
+let fleetArr = []
 
+function makeAlien() {
+    enemyGenPlus()
+    // console.log(enemies)
+    enemies.forEach(ship => {
+    let alienShip = document.createElement('img')
+    alienShip.setAttribute('src', 'images/alien-ship.png')
+    alienShip.setAttribute('class', 'fleet-ship')
+    alienShip.setAttribute('id', `alien-${enemies.indexOf(ship)}`)
+    alienFleet.append(alienShip)   
+    })
+    fleetArr = document.querySelectorAll('.alien-fleet img')
+}
+makeAlien()
+fleetArr.forEach(ship => {
+    ship.addEventListener('click', () => {
+        ship.classList.add('test')
+        document.querySelector('.test').style.transform = 'translate(50px, 100px) scale(1.5)'
+        setTimeout(()=>ship.classList.remove('test'), 2000)
+        console.log(ship.className)
+    })
+})
