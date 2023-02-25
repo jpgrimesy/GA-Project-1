@@ -141,6 +141,8 @@ function attackEnemy(enemy) {
     }
     checkEnemyStatus(enemy)
 }
+
+
 function attackMegaShip (enemy, pod) {
     if(yourShip.attack() === true) {
         if(podsArr.length > 0) {
@@ -471,6 +473,9 @@ function gameOver() {
         }
     }
 }
+const prompt = document.querySelector('.text-container')
+const shootStart = document.querySelector('.shoot-start')
+const hero = document.querySelector('.hero')
 const alienFleet = document.querySelector('.alien-fleet')
 const rowOne = document.querySelector('.row-1')
 const rowTwo = document.querySelector('.row-2')
@@ -485,42 +490,140 @@ function makeAlien() {
     enemyGenPlus()
     // console.log(enemies)
     enemies.forEach(ship => {
-    let alienShip = document.createElement('img')
-    let alienHull = document.createElement('span')
-    alienShip.setAttribute('src', 'images/alien-ship.png')
-    alienShip.setAttribute('class', 'fleet-ship')
-    alienShip.setAttribute('id', `alien-${enemies.indexOf(ship)}`)
-    alienHull.innerText = `hull: ${ship.hull} `
-    if(enemies.indexOf(ship) <= 4) {
-        rowOne.append(alienShip)
-        rowOneHealth.append(alienHull)
-        rowOneArr = document.querySelectorAll('.row-1 img')
-    } else {
-        rowTwo.append(alienShip)
-        rowTwoHealth.append(alienHull)
-        rowTwoArr = document.querySelectorAll('.row-2 img')
-    }
-      
+        // console.log(enemies.indexOf(ship))
+        let alienShip = document.createElement('img')
+        let alienHull = document.createElement('span')
+        alienShip.setAttribute('src', 'images/alien-ship.png')
+        alienShip.setAttribute('class', 'fleet-ship')
+        alienShip.setAttribute('id', `${enemies.indexOf(ship)}`)
+        alienHull.innerText = `hull: ${ship.hull} `
+        if(enemies.indexOf(ship) <= 4) {
+            rowOne.append(alienShip)
+            rowOneHealth.append(alienHull)
+            rowOneArr = document.querySelectorAll('.row-1 img')
+            setTimeout(hullAppear, 2000)
+        } else {
+            rowTwo.append(alienShip)
+            rowTwoHealth.append(alienHull)
+            rowTwoArr = document.querySelectorAll('.row-2 img')
+            setTimeout(hullAppear, 2000)
+        }
     })
     fleetArr = document.querySelectorAll('.alien-fleet img')
     spans = document.querySelectorAll('span')
 }
 makeAlien()
 fleetArr.forEach(ship => {
-    ship.addEventListener('click', (e) => {
-        ship.classList.add('test')
-        document.querySelector('.test').style.transform = 'translate(0, 130%) scale(1.33)'
-        console.log(e.target)
-        setTimeout(()=> {
-            document.querySelector('.main-alien').appendChild(ship);
-            rowOneArr = document.querySelectorAll('.row-1 img')
-        }, 500)
+//    let testArr = [...fleetArr]
+//    console.log(testArr.indexOf(ship))
+//    console.log(ship.id)
+    ship.addEventListener('click', () => {
+        let shipIdx = ship.id
+        spans[shipIdx].style.display = 'none'
+        ship.classList.add('move-down')
+      
+        if(shipIdx <= 4) {
+            rowOneHealth.style.display = 'none'
+            moveAngle(rowOneArr, ship)
+            setTimeout(()=> {
+                changeMain(ship)
+                rowOneArr = document.querySelectorAll('.row-1 img')
+                rowOneHealth.style.display = 'inline'
+            }, 600)
+        } else {
+            rowTwoHealth.style.display = 'none'
+            moveAngle(rowTwoArr, ship)
+            setTimeout(()=> {
+                changeMain(ship)
+                rowTwoArr = document.querySelectorAll('.row-2 img')
+                rowTwoHealth.style.display = 'inline'
+            }, 500)
+        }
         disableSelect()
-        
     })
-    
 })
 function disableSelect() {
     fleetArr.forEach(ship => ship.style.pointerEvents = 'none')
 }
-// console.log(spans)
+function hullAppear() { 
+    rowOneHealth.classList.add('appear')
+    rowTwoHealth.classList.add('appear')
+}
+function moveAngle(arr, ship) {
+    let shipId = parseInt(ship.id)
+    let rowArr = [...arr]
+    let length = rowArr.length
+    let rowIdx = rowArr.indexOf(ship)
+    let moveDown  = document.querySelector('.move-down')
+    if(shipId <= 4){
+        if(length === 5 && rowIdx === 2 || length === 3 && rowIdx === 1 || length === 1) {
+            moveDown.style.transform = 'translate(0, 200%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 1 || length === 3 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(85%, 200%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 3 || length === 3 && rowIdx === 2) {
+            moveDown.style.transform = 'translate(-85%, 200%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 1 || length === 2 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(45%, 200%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 2 || length === 2 && rowIdx === 1) {
+            moveDown.style.transform = 'translate(-45%, 200%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(140%, 200%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 4) {
+            moveDown.style.transform = 'translate(-140%, 200%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(120%, 200%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 3) {
+            moveDown.style.transform = 'translate(-120%, 200%) scale(1.33)'
+        }
+    } else {
+        if(length === 5 && rowIdx === 2 || length === 3 && rowIdx === 1 || length === 1) {
+            moveDown.style.transform = 'translate(0, 130%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 1 || length === 3 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(85%, 130%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 3 || length === 3 && rowIdx === 2) {
+            moveDown.style.transform = 'translate(-85%, 130%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 1 || length === 2 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(45%, 130%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 2 || length === 2 && rowIdx === 1) {
+            moveDown.style.transform = 'translate(-45%, 130%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(140%, 130%) scale(1.33)'
+        } else if(length === 5 && rowIdx === 4) {
+            moveDown.style.transform = 'translate(-140%, 130%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 0) {
+            moveDown.style.transform = 'translate(120%, 130%) scale(1.33)'
+        } else if(length === 4 && rowIdx === 3) {
+            moveDown.style.transform = 'translate(-120%, 130%) scale(1.33)'
+        }
+    }
+}
+function changeMain(ship) {
+    document.querySelector('.main-alien').appendChild(ship);
+    ship.style.removeProperty('transform')
+    ship.setAttribute('id', 'current-enemy')
+}
+function fireLaser() {
+
+
+    document.querySelector('.laser-one').setAttribute('id', 'laser-one-miss')
+    document.querySelector('.laser-two').setAttribute('id', 'laser-two-miss')
+    
+    
+}
+// fireLaser('laser-one')
+// fireLaser('laser-two')
+// console.log(document.querySelector('.laser-one'))
+
+// fireLaser()
+// document.querySelector('.prompt img').addEventListener('click', () => {
+//     document.querySelector('.text-container').innerHTML = '';
+//     fireLaser()
+// })
+// console.log(window.innerHeight * .1 )
+function pickAlien() {
+    let ask = document.createElement('div')
+    ask.classList.add('choose')
+    ask.innerHTML = '<img id="arrow" src="images/up-arrow.png"><br /><br /><span>Please choose enemy</span>'
+    prompt.append(ask)
+}
+setTimeout(pickAlien, 1900)
