@@ -132,12 +132,11 @@ function beefUp(stat, ship) {
 }
 
 //hero and enemy+crit attack rolls
-function attackEnemy(enemy) {
+function attackEnemy() {
     if (yourShip.attack() === true) {
         enemy.hull -= yourShip.firepower;
-        console.log('***Hit!***')
     } else {
-        console.log('Swing and a miss!')
+        laserMiss()
     }
     checkEnemyStatus(enemy)
 }
@@ -405,24 +404,7 @@ function chooseEnemy() {
     }
 }
 
-function startGame() {
-    console.clear()
-    console.log('< S >< P >< A >< C >< E >  < B >< A >< T >< T >< L >< E >');
-    console.log('\n\n***WARNING***\nAn alien fleet is incoming!\n\n')
-    while(true){
-        console.log('Board the USS Scwharzenegger and smoke these suckaz? (Y)es or (N)o')
-        let userInput = prompt ('')
-    if (userInput.toLowerCase() === 'y') {
-            enemyGen();
-            pressEnter();
-            chooseEnemy();
-            answered = true
-        } else if (userInput.toLowerCase() === 'n') {
-            console.log('BITCH!')
-            answered = true
-        }
-    }
-}
+
 //new game+ feature
 function anotherWave() {
     console.log('However, another wave is incoming!\nAre you thirsty for more?');
@@ -475,22 +457,23 @@ function gameOver() {
 }
 const prompt = document.querySelector('.text-container')
 const shootStart = document.querySelector('.shoot-start')
-const hero = document.querySelector('.hero')
+const hero = document.querySelector('.hero-ship img')
 const alienFleet = document.querySelector('.alien-fleet')
 const rowOne = document.querySelector('.row-1')
 const rowTwo = document.querySelector('.row-2')
 const rowOneHealth = document.querySelector('.row-1-hlth')
 const rowTwoHealth = document.querySelector('.row-2-hlth')
+const laserOne = document.querySelector('.laser-one')
+const laserTwo = document.querySelector('.laser-two')
+const enemyLaser = document.querySelector('.enemy-laser')
 let rowOneArr = []
 let rowTwoArr = []
 let fleetArr = []
 let spans = []
-// let health = docume
+let currentAlien;
+let currentIdx;
 function makeAlien() {
-    enemyGenPlus()
-    // console.log(enemies)
     enemies.forEach(ship => {
-        // console.log(enemies.indexOf(ship))
         let alienShip = document.createElement('img')
         let alienHull = document.createElement('span')
         alienShip.setAttribute('src', 'images/alien-ship.png')
@@ -511,37 +494,40 @@ function makeAlien() {
     })
     fleetArr = document.querySelectorAll('.alien-fleet img')
     spans = document.querySelectorAll('span')
+    setTimeout(pickAlien, 2200)
 }
-makeAlien()
-fleetArr.forEach(ship => {
-//    let testArr = [...fleetArr]
-//    console.log(testArr.indexOf(ship))
-//    console.log(ship.id)
-    ship.addEventListener('click', () => {
-        let shipIdx = ship.id
-        spans[shipIdx].style.display = 'none'
-        ship.classList.add('move-down')
-      
-        if(shipIdx <= 4) {
-            rowOneHealth.style.display = 'none'
-            moveAngle(rowOneArr, ship)
-            setTimeout(()=> {
-                changeMain(ship)
-                rowOneArr = document.querySelectorAll('.row-1 img')
-                rowOneHealth.style.display = 'inline'
-            }, 600)
-        } else {
-            rowTwoHealth.style.display = 'none'
-            moveAngle(rowTwoArr, ship)
-            setTimeout(()=> {
-                changeMain(ship)
-                rowTwoArr = document.querySelectorAll('.row-2 img')
-                rowTwoHealth.style.display = 'inline'
-            }, 500)
-        }
-        disableSelect()
+
+function enableSelect() {
+    fleetArr.forEach(ship => {
+        ship.style.pointerEvents = 'auto'
+        ship.addEventListener('click', () => {
+            let shipIdx = ship.id
+            currentIdx = shipIdx
+            spans[shipIdx].style.display = 'none'
+            ship.classList.add('move-down')
+            prompt.innerHTML = ''
+            if(shipIdx <= 4) {
+                rowOneHealth.style.display = 'none'
+                moveAngle(rowOneArr, ship)
+                setTimeout(()=> {
+                    changeMain(ship)
+                    rowOneArr = document.querySelectorAll('.row-1 img')
+                    rowOneHealth.style.display = 'inline'
+                }, 600)
+            } else {
+                rowTwoHealth.style.display = 'none'
+                moveAngle(rowTwoArr, ship)
+                setTimeout(()=> {
+                    changeMain(ship)
+                    rowTwoArr = document.querySelectorAll('.row-2 img')
+                    rowTwoHealth.style.display = 'inline'
+                }, 500)
+            }
+            disableSelect()
+            setTimeout(firePrompt, 1500)
+        })
     })
-})
+}
 function disableSelect() {
     fleetArr.forEach(ship => ship.style.pointerEvents = 'none')
 }
@@ -602,28 +588,158 @@ function changeMain(ship) {
     ship.style.removeProperty('transform')
     ship.setAttribute('id', 'current-enemy')
 }
-function fireLaser() {
-
-
-    document.querySelector('.laser-one').setAttribute('id', 'laser-one-miss')
-    document.querySelector('.laser-two').setAttribute('id', 'laser-two-miss')
-    
-    
+function laserMiss() {
+    laserOne.setAttribute('id', 'laser-one-miss')
+    laserTwo.setAttribute('id', 'laser-two-miss')
+    setTimeout(() => {
+        document.querySelector('.main-alien img').setAttribute('id', 'enemy-dodge')
+    }, 400)
+    setTimeout(() => {
+        laserOne.removeAttribute('id')
+        laserTwo.removeAttribute('id')
+    }, 1000)
 }
+// laserMiss()
 // fireLaser('laser-one')
 // fireLaser('laser-two')
 // console.log(document.querySelector('.laser-one'))
 
-// fireLaser()
-// document.querySelector('.prompt img').addEventListener('click', () => {
-//     document.querySelector('.text-container').innerHTML = '';
-//     fireLaser()
-// })
+function firePrompt() {
+    let laserPrompt = document.createElement('div')
+    currentAlien = document.querySelector('.main-alien img')
+    laserPrompt.classList.add('prompt')
+    laserPrompt.innerHTML = '<p>FIRE!</p><img id="fire-btn" src="images/fire.png">'
+    prompt.append(laserPrompt)
+    document.querySelector('.prompt img').addEventListener('click', () => {
+    document.querySelector('.text-container').innerHTML = '';
+    document.getElementById('current-enemy').removeAttribute('id')
+    document.getElementById('hero-idle').removeAttribute('id')
+    attackEnemy()
+    })
+}
 // console.log(window.innerHeight * .1 )
 function pickAlien() {
     let ask = document.createElement('div')
     ask.classList.add('choose')
     ask.innerHTML = '<img id="arrow" src="images/up-arrow.png"><br /><br /><span>Please choose enemy</span>'
     prompt.append(ask)
+    enableSelect()
 }
-setTimeout(pickAlien, 1900)
+function startGame() {
+    let space = document.createElement('h1')
+    let battle = document.createElement('h1')
+    let next = document.createElement('p')
+    let startBtn = document.createElement('img')
+    let heroShip = document.createElement('img')
+    let heroContainer = document.querySelector('.hero-ship')
+    space.classList.add('title')
+    space.innerText = 'SPACE'
+    prompt.append(space)
+    setTimeout(() => {
+        battle.classList.add('title')
+        battle.innerText = 'BATTLE'
+        prompt.append(battle)
+    }, 600)
+    setTimeout(() => {
+        next.classList.add('blink')
+        next.innerText = 'press start to launch'
+        startBtn.setAttribute('src', 'images/start-button.png')
+        startBtn.setAttribute('id', 'start-btn')
+        startBtn.style.width = '100px'
+        prompt.append(next)
+        prompt.append(startBtn)
+    }, 1300)
+    startBtn.addEventListener('click', () => {
+        prompt.innerHTML = ''
+        heroShip.setAttribute('src', 'images/space-ship.png')
+        heroShip.setAttribute('id', 'enter-ship')
+        heroContainer.append(heroShip)
+        createStats()
+        setTimeout(() => {
+            heroShip.removeAttribute('id')
+            heroShip.setAttribute('id', 'hero-idle')
+            enemyApproach()
+        }, 2200)
+    })
+}
+
+function createStats() {
+    let healthImg = document.createElement('img')
+    let firepowerImg = document.createElement('img')
+    let missileImg = document.createElement('img')
+    let healthTxt = document.createElement('p')
+    let firepowerTxt = document.createElement('p')
+    let missileTxt = document.createElement('p')
+    let yourScore = document.createElement('p')
+
+    healthImg.setAttribute('src', 'images/health.png')
+    healthImg.setAttribute('id', 'health-img')
+    firepowerImg.setAttribute('src', 'images/firepower.png')
+    firepowerImg.setAttribute('id', 'firepower-img')
+    missileImg.setAttribute('src', 'images/missile.png')
+    missileImg.setAttribute('id', 'missile-img')
+    document.querySelector('.stat-img-container').append(healthImg, firepowerImg, missileImg)
+
+    healthTxt.innerText = `= ${yourShip.hull}`
+    healthTxt.setAttribute('id', 'health-txt')
+    firepowerTxt.innerText = `= ${yourShip.firepower}`
+    firepowerTxt.setAttribute('id', 'firepower-txt')
+    missileTxt.innerText = `= ${yourShip.missiles}`
+    missileTxt.setAttribute('id', 'missile-txt')
+    document.querySelector('.hero-stats').append(healthTxt, firepowerTxt, missileTxt)
+
+    yourScore.innerText = `score: ${score}`
+    yourScore.setAttribute('id', 'current-score')
+    document.querySelector('.score').append(yourScore)
+}
+function enemyApproach() {
+    let enemyPrompt = document.createElement('div')
+    enemyGen()
+    enemyPrompt.classList.add('prompt')
+    enemyPrompt.innerHTML = `<h1 class="blink">WARNING!!!</h1><p>${enemies.length} ships are approaching!<p>click continue to welcome aliens to Earth</p><img src='images/next.png'>`
+    prompt.append(enemyPrompt)
+    document.querySelector('.prompt img').addEventListener('click', () => {
+        prompt.innerHTML = ''
+        makeAlien()
+    })
+}
+startGame()
+// enemyApproach()
+function laserHit() {
+    laserOne.setAttribute('id', 'laser-one-hit')
+    laserTwo.setAttribute('id', 'laser-two-hit')
+    setTimeout(() => {
+        laserOne.setAttribute('src', 'images/explosion.png')
+        laserTwo.setAttribute('src', 'images/explosion.png')
+        laserOne.setAttribute('id', 'hit-explode-one')
+        laserTwo.setAttribute('id', 'hit-explode-two')
+        document.querySelector('.main-alien img').setAttribute('id', 'enemy-hit')
+    }, 700)
+    setTimeout(() => {
+        document.querySelector('.main-alien img').removeAttribute('id')
+    }, 1000)
+}   
+// laserHit()
+// laserMiss()
+function enemyMiss() {
+    enemyLaser.setAttribute('id', 'enemy-miss')
+    setTimeout(() => {
+        hero.setAttribute('id', 'ship-dodge')
+    }, 300)
+    setTimeout(() => {
+        enemyLaser.removeAttribute('id')
+    }, 1000)
+}
+
+function enemyHit() {
+    enemyLaser.setAttribute('id', 'ship-hit')
+    setTimeout(() => {
+        enemyLaser.setAttribute('src', 'images/explosion.png')
+        enemyLaser.setAttribute('id', 'hit-explode')
+        hero.setAttribute('id', 'enemy-hit')
+    }, 700)
+    setTimeout(() => {
+        hero.removeAttribute('id')
+    }, 1000)
+}
+// enemyHit()

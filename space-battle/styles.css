@@ -7,7 +7,6 @@ body {
     height: 95vh;
     font-family: 'Press Start 2P', cursive;
 }
-
 .ships-container {
     margin: 0 0;
     display: flex;
@@ -28,34 +27,28 @@ body {
 .hero-ship {
     text-align: left;
     flex-grow: 2;
-    
 }
 .hero-ship img {
     width: 100px;
-    margin-left: 15px;
+    margin-left: 14px;
 }
 .hero-stats {
     color: white;
-    
+    font-size: 15px;
 }
-.hero-stats img {
-    width: 30px;
-    margin-top: 5px;
+.hero-stats p {
+    margin: 21px 0 21px 0;
 }
-/* .hero-stats span {
-    margin-top: 5px;
-} */
-/* #health-img {
-    margin-top: 10px;
+.score {
+    color: white;
+    text-align: right;
+    width: 60px;
+    font-size: 15px;
 }
-#firepower-img {
-    margin-top: 20px;
-} */
 .aliens {
     width: 320px;
     justify-content: center;
     align-items: center;
-
 }
 .alien-fleet img {
     width: 60px;
@@ -63,12 +56,22 @@ body {
 .alien-fleet {
     justify-content: center;
     width: 100%;
+}
+[id='0'], [id='1'], [id='2'], [id='3'], [id='4'], [id='5'], [id='6'], [id='7'], [id='8'], [id='9'] {
     position: relative;
-    /* transition: 1s; */
     animation: move-in 2s linear forwards;
 }
 .text-container {
     color: white;
+}
+.title {
+    position: relative;
+    animation: title-in 0.5s linear forwards;
+    margin-top: 0;
+}
+.blink {
+    position: relative;
+    animation: blink 1s infinite;
 }
 .choose {
     height: 50vh;
@@ -81,22 +84,25 @@ body {
     position: relative;
     animation: spin-arrow 2s linear infinite;
 }
+.text-container img:active {
+    transform: translateY(5px);
+}
 .prompt {
-    width: 250px;
-    height: 200px;
-    /* margin: 20px auto; */
+    width: 320px;
+    height: auto;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 5px;
+    padding: 8px;
 }
 .prompt img {
     width: 100px;
     cursor: pointer;
 }
+.prompt h1 {
+    color: red;
+}
 .prompt img:active {
     transform: translateY(5px);
-}
-.prompt p {
-    padding: 25px;
 }
 .move-down {
     transition: transform 0.75s;
@@ -113,7 +119,7 @@ body {
 }
 .main-alien {
     position: relative;
-    width: 50%;
+    width: 320px;
     height: 100px;
 }
 .main-alien img {
@@ -121,47 +127,143 @@ body {
 }
 #current-enemy {
     position: relative;
-    animation: move-left 2s linear infinite;
+    animation: ship-idle 3s linear infinite;
+}
+#hero-idle {
+    position: relative;
+    animation: ship-idle 4s linear infinite;
 }
 .row-1, .row-2 {
     height: 60px;
     width: 100%;
 }
+.main-container {
+    height: 130px;
+}
+.stat-img-container {
+    width: 35px;
+    
+}
+.stat-img-container img {
+    width: 35px;
+    margin-top: 2px;
+}
 #laser-one-miss {
     width: 30px;
     position: relative;
     display: inline;
-    animation: fire-one-miss 2s linear forwards;
+    animation: fire-one-miss 1s linear forwards;
 }
 #laser-two-miss {
     width: 30px;
     position: relative;
     display: inline;
-    animation: fire-two-miss 2s linear forwards;
+    animation: fire-two-miss 1s linear forwards;
+}
+.enemy-shoot-start {
+    width: 320px;
+}
+.enemy-shoot-start img {
+    display: none;
+    width: 40px;
 }
 .shoot-start {
     width: 320px;
-    /* align-self: self-end; */
 }
 .shoot-start img {
     display: none;
     width: 30px;
 }
-
+#enter-ship{
+    position: relative;
+    animation: enter-ship 2s linear forwards;
+}
+#health-img, #health-txt, #firepower-txt, #missile-txt, #current-score {
+    position: relative;
+    animation: stats-in 2s linear forwards;
+}
+#health-img, #firepower-img, #missile-img {
+    position: relative;
+    animation: stat-img-in 2s linear forwards;
+}
+#fire-btn {
+    position: relative;
+    animation: clicker 0.5s infinite;
+}
+#enemy-dodge {
+    position: relative;
+    animation: enemy-dodge 0.5s linear forwards;
+}
+#laser-one-hit {
+    display: inline;
+    width: 30px;
+    position: relative;
+    animation: fire-one-hit 0.7s linear forwards;
+}
+#laser-two-hit {
+    position: relative;
+    display: inline;
+    width: 30px;
+    animation: fire-two-hit 0.7s linear forwards;
+}
+#hit-explode-one, #hit-explode-two {
+    position: relative;
+    display: inline;
+    width: 30px;
+    animation: hit-explode 0.4s linear forwards;
+}
+#enemy-hit {
+    position: relative;
+    animation: enemy-hit .1s linear infinite;
+}
+#enemy-miss {
+    z-index: 1;
+    position: relative;
+    display: inline;
+    animation: enemy-miss 1s linear forwards;
+}
+#ship-dodge {
+    position: relative;
+    animation: ship-dodge 0.7s linear forwards;
+}
+#ship-hit {
+    position: relative;
+    display: inline;
+    animation: ship-hit 0.6s linear forwards;
+}
+#hit-explode {
+    z-index: 1;
+    position: relative;
+    display: inline;
+    animation: ship-hit-explode 0.4s linear forwards;
+}
+@keyframes ship-hit-explode {
+    0% {
+        transform: translateY(55vh) scale(1);
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(55vh) scale(2);
+        opacity: 0;
+    }
+}
+@keyframes clicker {
+    to {
+        transform: translateY(5px);
+    }
+}
 @keyframes move-left {
     0% {
-        transform: translateY(10%);
         left: 40%;
-       
     }
     50% {
         left: 60%;
-        /* bottom: 50%; */
     }
     100% {
-        transform: translateY(10%);
         left: 40%;
-        /* bottom: -50%; */
     }
 }
 @keyframes move-in {
@@ -169,18 +271,31 @@ body {
         top: -100%;
     }
     to {
-        top: 3%;
+        top: 0;
     }
 }
+@keyframes enemy-miss {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(110vh);
+    }
+}
+@keyframes ship-hit {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(55vh);
+    }
+}
+
 @keyframes fire-one-miss {
     from {
-        /* left: -2%;
-        bottom: -600%; */
         transform: translate(-23%, 5vh);
     }
     to {
-        /* left: -2%;
-        bottom: 3000%; */
         transform: translate(-23%, -110vh);
     }
 }
@@ -190,6 +305,55 @@ body {
     }
     to {
         transform: translate(21%, -110vh);
+    }
+}
+@keyframes fire-one-hit {
+    from {
+        transform: translate(-23%, 5vh);
+    }
+    to {
+        transform: translate(-23%, -60vh);
+    }
+}
+@keyframes fire-two-hit {
+    from {
+        transform: translate(21%, 5vh);
+    }
+    to {
+        transform: translate(21%, -60vh);
+    }
+}
+@keyframes hit-explode {
+    0% {
+        transform: translateY(-60vh) scale(1);
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-60vh) scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes enemy-hit {
+    0% {
+        transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(5px);
+    }
+}
+@keyframes ship-dodge {
+    0% {
+        transform: scaleX(1) skewY(0);
+    }
+    50% {
+        transform: scaleX(0.4) skewY(15deg);
+    }
+    100% {
+        transform: scaleX(1) skewY(0);
     }
 }
 @keyframes spin-arrow {
@@ -215,6 +379,108 @@ body {
     }
     to {
         transform: translateY(0);
+    }
+}
+@keyframes title-in {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes stats-in {
+    from {
+        transform: translateY(240%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+@keyframes stat-img-in {
+    from {
+        transform: translateY(110%);
+        transform: (translateY(0));
+    }
+}
+@keyframes enter-ship {
+    0% {
+        transform: translate(5px, 110%)
+    } 
+    3% {
+        transform: translate(-5px, 107%)
+    }
+    6% {
+        transform: translate(5px, 104%)
+    }
+    9% {
+        transform: translate(-5px, 101%)
+    }
+    12% {
+        transform: translate(5px, 98%)
+    }
+    15% {
+        transform: translate(-5px, 95%)
+    }
+    18% {
+        transform: translate(5px, 92%)
+    }
+    21% {
+        transform: translate(-5px, 89%)
+    }
+    24% {
+        transform: translate(5px, 86%)
+    }
+    27% {
+        transform: translate(-5px, 83%)
+    }
+    100% {
+        transform: translateX(0) translateY(0)
+    }
+}
+@keyframes ship-idle {
+    0% {
+        transform: translate(0, 0);
+    }
+    17% {
+        transform: translate(15px, 15px);
+    }
+    34% {
+        transform: translate(15px, -15px);
+    }
+    51% {
+        transform: translate(0, 0);
+    }
+    67% {
+        transform: translate(-15px, 15px);
+    }
+    84% {
+        transform: translate(-15px, -15px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+@keyframes enemy-dodge {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.5);
+    }
+    100% {
+        transform: scale(1);
     }
 }
 /* @media screen and  (min-width: 1024px) {
