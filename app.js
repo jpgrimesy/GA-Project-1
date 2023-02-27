@@ -39,13 +39,13 @@ rightBtn.addEventListener('click', () => {
     setTimeout(() => {
         document.getElementById('two').style.display = 'block';
         document.getElementById('two').setAttribute('id', 'two-anim-right-in');
-        projectBg.style.background = 'url(/images/space-bat-img.png)';
+        projectBg.style.background = 'url(images/space-bat-img.png)';
         setTimeout(() => {
             document.getElementById('two-anim-right-in').setAttribute('id', 'two')
             document.getElementById('two').style.display = 'block'
         }, 400)
     }, 500)
-    demoBtn.setAttribute('href', '/space-battle/index.html')
+    demoBtn.setAttribute('href', 'space-battle/index.html')
     codeBtn.setAttribute('href', 'https://github.com/jpgrimesy/My-Portfolio/tree/main/space-battle')
 })
 leftBtn.addEventListener('click', () => {
@@ -59,13 +59,13 @@ leftBtn.addEventListener('click', () => {
     setTimeout(() => {
         document.getElementById('one').style.display = 'block';
         document.getElementById('one').setAttribute('id', 'one-anim-left-in');
-        projectBg.style.background = 'url(/images/hangman-img.jpg)';
+        projectBg.style.background = 'url(images/hangman-img.jpg)';
         setTimeout(() => {
             document.getElementById('one-anim-left-in').setAttribute('id', 'one')
             document.getElementById('one').style.display = 'block'
         }, 400)
     }, 500)
-    demoBtn.setAttribute('href', '/hangman1/index.html')
+    demoBtn.setAttribute('href', 'hangman1/index.html')
     codeBtn.setAttribute('href', 'https://github.com/jpgrimesy/My-Portfolio/tree/main/hangman1')
 })
 function activeLeftBtn() {

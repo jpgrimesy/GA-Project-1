@@ -583,9 +583,7 @@ function laserMiss() {
         currentAlien.removeAttribute('id')
     }, 1000)
 }
-// let laserPrompt = document.createElement('div')
 function firePrompt() {
-    
     currentAlien = document.querySelector('.main-alien img')
     newPrompt.classList.add('prompt')
     newPrompt.innerHTML = '<p>FIRE!</p><img id="fire-btn" src="images/fire.png">'
@@ -631,7 +629,6 @@ function startGame() {
     }, 1300)
     startBtn.addEventListener('click', () => {
         prompt.innerHTML = ''
-        console.log('startbtn')
         heroShip.setAttribute('src', 'images/space-ship.png')
         heroShip.setAttribute('id', 'enter-ship')
         heroContainer.append(heroShip)
@@ -680,7 +677,6 @@ function enemyApproach() {
     prompt.append(enemyPrompt)
     document.querySelector('.prompt img').addEventListener('click', () => {
         prompt.innerHTML = ''
-        console.log('enemyapproach')
         makeAlien()
     })
 }
@@ -772,10 +768,10 @@ function continueScreen() {
     newPrompt.innerHTML = `<h1>YOU'VE DEFEATED THE ENEMY WAVE!!</h1><p>However, another wave is incoming!</p><p class="blink">Keep fighting?</p><img id="yes-btn" src="images/yes-btn.png"><img id="no-btn" src="images/no-btn.png">`
     prompt.append(newPrompt)
     document.getElementById('yes-btn').addEventListener('click', ()=> {
-        console.log('clicked yes')
+        
     })
     document.getElementById('no-btn').addEventListener('click', ()=>{
-        console.log('clicked no')
+      
     })
 } 
 
