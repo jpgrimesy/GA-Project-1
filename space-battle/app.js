@@ -1,5 +1,3 @@
-
-//Classes and subclasses
 class Spaceship {
     constructor() {
         this.hull = 20;
@@ -32,7 +30,6 @@ class Weaponpod {
     }
 }
 
-//Global variables
 const yourShip = new Shwarz();
 let enemies = []
 let megaArr = []
@@ -43,7 +40,6 @@ let fMedals = 0;
 let aMedals = 0;
 let wave = 0;
 
-//Random range generator
 function randomRange(min, max) {
     if (max < 1) {
         let num = Math.random() * (max - min) + min;
@@ -54,7 +50,6 @@ function randomRange(min, max) {
     }
 }
 
-// enemy/pod generators
 function enemyGen() {
     let enemyCount = 6;
     while (enemyCount > 0) {
@@ -92,7 +87,6 @@ function podGen() {
     }
 }
 
-//stat reset and stat generator
 function resetStats() {
     yourShip.hull = 20 + wave;
     yourShip.firepower = 5 + wave;
@@ -106,7 +100,6 @@ function generateAlienStats(alien) {
     alien.accuracy = randomRange(.6, .8); 
 }
 
-//stat modifiers
 function beefUp(stat, ship) {
     if (stat === 'alienPlus') {
         ship.hull = ship.hull + randomRange(2, 4) + (wave - 1)
@@ -131,16 +124,31 @@ function beefUp(stat, ship) {
     }
 }
 
-//hero and enemy+crit attack rolls
 function attackEnemy() {
     if (yourShip.attack() === true) {
-        enemy.hull -= yourShip.firepower;
+        enemies[currentIdx].hull -= yourShip.firepower;
+        if(enemies[currentIdx].hull > 0) {
+            laserHit()
+            setTimeout(()=> popText('HIT!'), 700)
+            setTimeout(attackYou, 1200)
+        } else {
+            defeatEnemy()
+            score++
+            setTimeout(()=> popText('Obliterated!'), 700)
+            setTimeout(()=>{
+                updateScore()
+                checkEnemyCount()
+                hero.setAttribute('id', 'hero-idle')
+                currEnmyContainer.innerHTML = ''
+
+            }, 1000)
+        }
     } else {
         laserMiss()
+        setTimeout(()=> popText('missed!', 'red'), 500)
+        setTimeout(attackYou, 1200)
     }
-    checkEnemyStatus(enemy)
 }
-
 
 function attackMegaShip (enemy, pod) {
     if(yourShip.attack() === true) {
@@ -200,43 +208,41 @@ function megaAttack(enemy, pod) {
     }
     statusAgainstMega(enemy, pod)
 }
-function attackYou(enemy) {
-    if(enemy.attack() === true) {
-        yourShip.hull -= enemy.firepower;
-        console.log(`You got hit! You've got ${yourShip.hull} hits left on your shields!`)
-        critRoll(enemy)
+function attackYou() {
+   if(enemies[currentIdx].attack() === true) {
+        yourShip.hull -= enemies[currentIdx].firepower;
+        if(yourShip.hull > 0) {
+            enemyHit()
+            critRoll()
+            setTimeout(()=>{
+                updateHealth()
+                popText(`HIT!
+                        -${enemies[currentIdx].firepower}
+                            `, 'red')
+            }, 700)
+        } else {
+            defeated()
+        }
     } else {
-        console.log('You dodged the enemy\'s lasers!')
+        enemyMiss()
+        checkYourStatus()
+        setTimeout(()=> popText('missed!'), 800)
     }
-    checkYourStatus(enemy)
 }
-function critRoll(enemy) {
+function critRoll() {
     if (Math.random() <= 0.2) {
-        console.log('Alien wants to regulate! It\'s attacking again!')
-        attackYou(enemy)
+        setTimeout(()=> popText('ALIEN REGULATION!', 'red'), 200)
+        setTimeout(attackYou, 1200)
     } else {
-        checkYourStatus(enemy) 
+        checkYourStatus()
     }
 }
 
-//status checks
-function checkYourStatus(enemy) {
+function checkYourStatus() {
     if(yourShip.hull > 0) {
-        attackEnemy(enemy)
+        setTimeout(attackEnemy, 1200)
     } else {
         gameOver()
-    }
-}
-function checkEnemyStatus(enemy) {
-    if (enemy.hull > 0) {
-        console.log(`Enemy hull needs ${enemy.hull} more damage!`)
-        attackYou(enemy)
-    } else {
-        let index = enemies.findIndex(x => x.id === enemy.id)
-        console.log('You destroyed an enemy ship!')
-        enemies.splice(index, 1)
-        score++
-        checkEnemyCount()
     }
 }
 function checkMegaStatus(enemy, pod) {
@@ -277,19 +283,10 @@ function statusAgainstMega(enemy, pod) {
 
 //status checks
 function checkEnemyCount() {
-    if(enemies.length > 0) {
-        while(true) {
-            console.log(`You have ${yourShip.hull} hits left on your shield\nKeep fighting? (Y)es or (N)o`)
-            let userInput = prompt ('')
-            if (userInput.toLowerCase() === 'y') {
-                console.clear()
-                chooseEnemy()
-            } else if (userInput.toLowerCase() === 'n') {
-                console.log('The aliens have conquered Earth! But there still might be a chance!')
-                continueScreen()
-                resetGame()
-            }
-        }
+    fleetArr = document.querySelectorAll('.alien-fleet img')
+    let enemyCount = fleetArr.length
+    if(enemyCount > 0) {
+        setTimeout(pickAlien, 400)
     } else if(enemies.length === 0 && megaArr.length > 0) {
         logMShip()
         console.log(`DUN! DUN! DUN!\nTHE MEGA SHIP HAS ARRIVED!\nAre you ready for this? (Y)es (N)o\n[shields: ${yourShip.hull}]`)
@@ -309,8 +306,10 @@ function checkEnemyCount() {
             }
         }
     } else {
-        console.log('YOU DID IT! YOU\'VE DEFEATED THE ENEMY WAVE!')
-        anotherWave()
+        setTimeout(()=>{
+            clearScreen()
+            continueScreen()
+        }, 400)
     }
 }
 //score awards system
@@ -380,32 +379,6 @@ function askMegaMissile(enemy, pod) {
         }
     }
 }
-
-//weapon targeting
-function chooseEnemy() {
-    let current = []
-    for (let i = 0; i < enemies.length; i++) {
-        let shipString = `<(${i + 1})> HP: ${enemies[i].hull}`
-        current.push(shipString)
-    }
-    console.log('You see ' + enemies.length + ' alien ship(s)')
-    console.log(current)
-    while (true) {
-        console.log('Which enemy do you want to attack?')
-        let userInput = prompt('Choose between 1 and ' + enemies.length +': ', 'Make a choice!')
-        if(userInput <= enemies.length && userInput !== 0){
-            if(yourShip.missiles > 0) {
-                askMissile(enemies[userInput - 1])
-            } else {
-                console.clear()
-                attackEnemy(enemies[userInput - 1])
-            }
-        } 
-    }
-}
-
-
-//new game+ feature
 function anotherWave() {
     console.log('However, another wave is incoming!\nAre you thirsty for more?');
     while(true) {
@@ -423,10 +396,6 @@ function anotherWave() {
         }
     }
 }
-function pressEnter() {
-    prompt('\nYou\'ve boarded! Hit enter to use the Schwarz!')
-    console.clear()
-}
 function resetGame() {
     score = 0;
     hMedals = 0;
@@ -438,10 +407,6 @@ function resetGame() {
     podsArr = [];
     resetStats();
     startGame()
-}
-function continueScreen() {
-    prompt('Hit enter to take your Deloreon to 88!')
-    resetGame()
 }
 function gameOver() {
     console.log(`GAME OVER\nYour score: ${score}\nTake the Deloreon to 88 and try again? (Y)es or (N)o`)
@@ -455,9 +420,18 @@ function gameOver() {
         }
     }
 }
+function clearScreen() {
+    document.querySelector('.score').innerHTML = '';
+    document.querySelector('.hero-ship').innerHTML = '';
+    document.querySelector('.hero-stats').innerHTML = '';
+    document.querySelector('.stat-img-container').innerHTML = '';
+    document.querySelector('.row-1-hlth').innerHTML = '';
+    document.querySelector('.row-2-hlth').innerHTML = '';
+    rowOneHealth.classList.remove('appear');
+    rowTwoHealth.classList.remove('appear');
+}
 const prompt = document.querySelector('.text-container')
 const shootStart = document.querySelector('.shoot-start')
-const hero = document.querySelector('.hero-ship img')
 const alienFleet = document.querySelector('.alien-fleet')
 const rowOne = document.querySelector('.row-1')
 const rowTwo = document.querySelector('.row-2')
@@ -466,12 +440,16 @@ const rowTwoHealth = document.querySelector('.row-2-hlth')
 const laserOne = document.querySelector('.laser-one')
 const laserTwo = document.querySelector('.laser-two')
 const enemyLaser = document.querySelector('.enemy-laser')
+const currEnmyContainer = document.querySelector('.main-alien')
+let newPrompt = document.createElement('div')
 let rowOneArr = []
 let rowTwoArr = []
 let fleetArr = []
 let spans = []
+let currentHealth = yourShip.hull
 let currentAlien;
 let currentIdx;
+let hero;
 function makeAlien() {
     enemies.forEach(ship => {
         let alienShip = document.createElement('img')
@@ -506,6 +484,7 @@ function enableSelect() {
             spans[shipIdx].style.display = 'none'
             ship.classList.add('move-down')
             prompt.innerHTML = ''
+            console.log('enableselect')
             if(shipIdx <= 4) {
                 rowOneHealth.style.display = 'none'
                 moveAngle(rowOneArr, ship)
@@ -589,35 +568,36 @@ function changeMain(ship) {
     ship.setAttribute('id', 'current-enemy')
 }
 function laserMiss() {
+    laserOne.style.display = 'inline'
+    laserTwo.style.display = 'inline'
     laserOne.setAttribute('id', 'laser-one-miss')
     laserTwo.setAttribute('id', 'laser-two-miss')
     setTimeout(() => {
         document.querySelector('.main-alien img').setAttribute('id', 'enemy-dodge')
     }, 400)
     setTimeout(() => {
+        laserOne.style.display = 'none'
+        laserTwo.style.display = 'none'
         laserOne.removeAttribute('id')
         laserTwo.removeAttribute('id')
+        currentAlien.removeAttribute('id')
     }, 1000)
 }
-// laserMiss()
-// fireLaser('laser-one')
-// fireLaser('laser-two')
-// console.log(document.querySelector('.laser-one'))
-
+// let laserPrompt = document.createElement('div')
 function firePrompt() {
-    let laserPrompt = document.createElement('div')
+    
     currentAlien = document.querySelector('.main-alien img')
-    laserPrompt.classList.add('prompt')
-    laserPrompt.innerHTML = '<p>FIRE!</p><img id="fire-btn" src="images/fire.png">'
-    prompt.append(laserPrompt)
+    newPrompt.classList.add('prompt')
+    newPrompt.innerHTML = '<p>FIRE!</p><img id="fire-btn" src="images/fire.png">'
+    prompt.append(newPrompt)
     document.querySelector('.prompt img').addEventListener('click', () => {
     document.querySelector('.text-container').innerHTML = '';
+    console.log('fireprompt')
     document.getElementById('current-enemy').removeAttribute('id')
     document.getElementById('hero-idle').removeAttribute('id')
     attackEnemy()
     })
 }
-// console.log(window.innerHeight * .1 )
 function pickAlien() {
     let ask = document.createElement('div')
     ask.classList.add('choose')
@@ -651,9 +631,11 @@ function startGame() {
     }, 1300)
     startBtn.addEventListener('click', () => {
         prompt.innerHTML = ''
+        console.log('startbtn')
         heroShip.setAttribute('src', 'images/space-ship.png')
         heroShip.setAttribute('id', 'enter-ship')
         heroContainer.append(heroShip)
+        hero = document.querySelector('.hero-ship img')
         createStats()
         setTimeout(() => {
             heroShip.removeAttribute('id')
@@ -679,7 +661,6 @@ function createStats() {
     missileImg.setAttribute('src', 'images/missile.png')
     missileImg.setAttribute('id', 'missile-img')
     document.querySelector('.stat-img-container').append(healthImg, firepowerImg, missileImg)
-
     healthTxt.innerText = `= ${yourShip.hull}`
     healthTxt.setAttribute('id', 'health-txt')
     firepowerTxt.innerText = `= ${yourShip.firepower}`
@@ -687,7 +668,6 @@ function createStats() {
     missileTxt.innerText = `= ${yourShip.missiles}`
     missileTxt.setAttribute('id', 'missile-txt')
     document.querySelector('.hero-stats').append(healthTxt, firepowerTxt, missileTxt)
-
     yourScore.innerText = `score: ${score}`
     yourScore.setAttribute('id', 'current-score')
     document.querySelector('.score').append(yourScore)
@@ -700,12 +680,13 @@ function enemyApproach() {
     prompt.append(enemyPrompt)
     document.querySelector('.prompt img').addEventListener('click', () => {
         prompt.innerHTML = ''
+        console.log('enemyapproach')
         makeAlien()
     })
 }
-startGame()
-// enemyApproach()
 function laserHit() {
+    laserOne.style.display = 'inline'
+    laserTwo.style.display = 'inline'
     laserOne.setAttribute('id', 'laser-one-hit')
     laserTwo.setAttribute('id', 'laser-two-hit')
     setTimeout(() => {
@@ -717,10 +698,14 @@ function laserHit() {
     }, 700)
     setTimeout(() => {
         document.querySelector('.main-alien img').removeAttribute('id')
-    }, 1000)
+        laserOne.removeAttribute('id')
+        laserTwo.removeAttribute('id')
+        laserOne.style.display = 'none'
+        laserTwo.style.display = 'none'
+        laserOne.setAttribute('src', 'images/laser.png')
+        laserTwo.setAttribute('src', 'images/laser.png')
+    }, 1300)
 }   
-// laserHit()
-// laserMiss()
 function enemyMiss() {
     enemyLaser.setAttribute('id', 'enemy-miss')
     setTimeout(() => {
@@ -728,6 +713,7 @@ function enemyMiss() {
     }, 300)
     setTimeout(() => {
         enemyLaser.removeAttribute('id')
+        hero.removeAttribute('id')
     }, 1000)
 }
 
@@ -740,6 +726,64 @@ function enemyHit() {
     }, 700)
     setTimeout(() => {
         hero.removeAttribute('id')
-    }, 1000)
+        enemyLaser.setAttribute('src', 'images/alien-laser.png')
+    }, 1300)
 }
+function defeatEnemy() {
+    laserOne.style.display = 'inline'
+    laserTwo.style.display = 'inline'
+    laserOne.setAttribute('id', 'laser-one-hit')
+    laserTwo.setAttribute('id', 'laser-two-hit')
+    setTimeout(()=>{
+        laserOne.style.display = 'none'
+        laserTwo.style.display = 'none'
+        document.querySelector('.main-alien img').setAttribute('src', 'images/explosion.png')
+        document.querySelector('.main-alien img').setAttribute('id', 'explode')
+    }, 700)
+} 
+function defeated() {
+    enemyLaser.setAttribute('id', 'ship-hit')
+    setTimeout(()=>{
+        enemyLaser.style.display = 'none'
+        hero.setAttribute('src', 'images/explosion.png')
+        hero.setAttribute('id', 'explode')
+    }, 700)
+} 
+function updateScore() {
+    document.getElementById('current-score').innerText = `score: ${score}`
+}
+function updateHealth() {
+    if (currentHealth !== yourShip.hull) {
+        currentHealth--;
+        document.getElementById('health-txt').innerText = `= ${currentHealth}`
+        setTimeout(updateHealth, 50)
+    }
+}
+function popText(str, color) {
+    let text = document.createElement('span')
+    text.setAttribute('id', 'pop-text')
+    text.style.color = color
+    text.innerText = str
+    prompt.append(text)
+    setTimeout(()=> prompt.innerHTML = '', 500)
+}
+function continueScreen() {
+    newPrompt.classList.add('prompt')
+    newPrompt.innerHTML = `<h1>YOU'VE DEFEATED THE ENEMY WAVE!!</h1><p>However, another wave is incoming!</p><p class="blink">Keep fighting?</p><img id="yes-btn" src="images/yes-btn.png"><img id="no-btn" src="images/no-btn.png">`
+    prompt.append(newPrompt)
+    document.getElementById('yes-btn').addEventListener('click', ()=> {
+        console.log('clicked yes')
+    })
+    document.getElementById('no-btn').addEventListener('click', ()=>{
+        console.log('clicked no')
+    })
+} 
+
 // enemyHit()
+// enemyGen()
+// defeated()
+// currentIdx = 2
+
+// firePrompt()
+startGame()
+// continueScreen()
